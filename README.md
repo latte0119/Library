@@ -7,5 +7,5 @@ Topcoder:  [latte0119](https://www.topcoder.com/members/latte0119/details/?track
 Codeforces:  [latte0119](http://codeforces.com/profile/latte0119)  
 Atcoder: [latte0119](https://atcoder.jp/user/latte0119)  
 
-#赤コーダー底辺
+#一生底辺赤コーダー
 ![](/Images/Cmrrz7vUIAABFeL.jpg)
