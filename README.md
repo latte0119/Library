@@ -1,5 +1,5 @@
 # Library
-latte0119の競技プログラミング用ライブラリ
+latte0119縺ｮ遶ｶ謚繝励Ο繧ｰ繝ｩ繝溘Φ繧ｰ逕ｨ繝ｩ繧､繝悶Λ繝ｪ
 
 #Profile
 Twitter:  [@lattemalta](https://twitter.com/lattemalta)  
@@ -7,5 +7,5 @@ Topcoder:  [latte0119](https://www.topcoder.com/members/latte0119/details/?track
 Codeforces:  [latte0119](http://codeforces.com/profile/latte0119)  
 Atcoder: [latte0119](https://atcoder.jp/user/latte0119)  
 
-#一生底辺赤コーダー
+#荳逕溷ｺ戊ｾｺ襍､繧ｳ繝ｼ繝繝ｼ
 ![](/Images/Cmrrz7vUIAABFeL.jpg)
