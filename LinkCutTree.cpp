@@ -1,16 +1,11 @@
-
-/*
-’¸“_‚ÉŽ‚½‚¹‚éî•ñ‚ÆA’x‰„XV‚Æ‚©‚Ì•”•ª‚ð–ˆ‰ñ‘‚«Š·‚¦‚é
-*/
-
 struct LinkCutTree{;
     struct Node{
         Node *lp,*rp,*pp;
         int cnt;
         bool rev;
-        int val,put,agg;//‘‚«Š·‚¦‚é
+        int val,put,agg;
         Node():lp(0),rp(0),pp(0),rev(0),cnt(1),put(0){}
-        bool isRoot(){
+        inline bool isRoot(){
             return !pp||(pp->lp!=this&&pp->rp!=this);
         }
 
@@ -22,7 +17,6 @@ struct LinkCutTree{;
                 rev=0;
             }
 
-            //‘‚«Š·‚¦‚é
             if(put){
                 val=agg=0;
                 if(lp)lp->put=1;
@@ -31,10 +25,9 @@ struct LinkCutTree{;
             }
         }
 
-        //•K—vˆÈã‚Épush‚µ‚Ä‚é‚©‚à
         void pushAll(){
             if(!isRoot())pp->pushAll();
-            push();
+            else push();
             if(lp)lp->push();
             if(rp)rp->push();
         }
@@ -42,7 +35,6 @@ struct LinkCutTree{;
         void update(){
             cnt=(lp?lp->cnt:0)+1+(rp?rp->cnt:0);
 
-            //‘‚«Š·‚¦‚é
             agg=val;
             if(lp)agg+=lp->agg;
             if(rp)agg+=rp->agg;
@@ -110,7 +102,6 @@ struct LinkCutTree{;
     Node *nodes;
     LinkCutTree(int n){nodes=new Node[n];}
 
-    //•Ó(v->v‚Ìe)‚ðíœ
     void cut(int v){
         nodes[v].expose();
         Node *p=nodes[v].lp;
@@ -119,7 +110,6 @@ struct LinkCutTree{;
         nodes[v].update();
     }
 
-    //•Ó(v->u)‚ð’Ç‰Á
     void link(int v,int u){
         nodes[v].expose();
         nodes[u].expose();
