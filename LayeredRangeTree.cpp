@@ -1,10 +1,3 @@
-
-//ŠÈ’P‚È—Ìˆæ–Ø
-//”—ñ‚É‚ÌŠe—v‘f‚ð(“Y‚¦ŽšA’l)‚Ì‘g‚Å“ñŽŸŒ³•½–Ê‚Éƒvƒƒbƒg‚µA‹éŒ`ƒNƒGƒŠ‚ð‚â‚é
-//”—ñ‚Ì‚ ‚é‹æŠÔ‚É‘Î‚µ‚ÄAuaˆÈãb–¢–žv‚ÌŒÂ”‚ª•ª‚©‚é
-//–{—ˆ‚ÍƒNƒGƒŠ‚²‚Æ‚ÉO(log^2 N)‚¾‚ªAfractional cascading‚Æ‚¢‚¤ƒeƒN‚ÅO(logN)‚É—Ž‚Æ‚µ‚Ä‚¢‚é
-
-
 struct LayeredRangeTree{
     LayeredRangeTree(){}
     LayeredRangeTree(vector<int>&a){init(a);}
