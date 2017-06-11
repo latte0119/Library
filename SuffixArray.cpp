@@ -114,7 +114,7 @@ class SuffixArray{
     public:
         void init(vector<int>vec){
             int b;
-            for(b=0;(1<<b)<vec.size();b++);
+            for(b=0;(1<<b)<=vec.size();b++);
             st.assign(b,vector<int>(1<<b));
             for(int i=0;i<vec.size();i++)st[0][i]=vec[i];
 
