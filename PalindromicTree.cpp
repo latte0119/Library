@@ -1,8 +1,7 @@
-
 struct PalindromicTree{
     struct node{
     map<char,int>nex;
-        int len,suflink,height,firapp;
+        int len,suflink,height,firapp,cnt;
         //length,suffix link,height,first appearance
     };
 
@@ -21,6 +20,7 @@ struct PalindromicTree{
 
         if(v[cur].nex.count(ch)){
             suf=v[cur].nex[ch];
+            v[suf].cnt++;
             return false;
         }
 
@@ -28,6 +28,7 @@ struct PalindromicTree{
 
         v[suf].len=v[cur].len+2;
         v[suf].firapp=pos;
+        v[suf].cnt=1;
         v[cur].nex[ch]=suf;
 
         if(v[suf].len==1){
@@ -68,7 +69,7 @@ struct PalindromicTree{
         }
     }
 
-    int calcCnt(){
+    void calcCnt(){
         assert(ord.size());
         for(int i=ord.size()-1;i>=0;i--){
             v[v[ord[i]].suflink].cnt+=v[ord[i]].cnt;
