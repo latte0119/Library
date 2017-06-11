@@ -12,4 +12,4 @@ struct BinaryIndexedTree{
 		for(k++;k;k-=k&-k)ret+=dat[k];
 		return ret;
 	}
-}
+};
