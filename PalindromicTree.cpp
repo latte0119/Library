@@ -68,11 +68,11 @@ struct PalindromicTree{
         }
     }
 
-	int calcCnt(){
-	    assert(ord.size());
-	    for(int i=ord.size()-1;i>=0;i--){
+    int calcCnt(){
+        assert(ord.size());
+        for(int i=ord.size()-1;i>=0;i--){
             v[v[ord[i]].suflink].cnt+=v[ord[i]].cnt;
-	    }
-	    v[0].cnt=v[1].cnt=0;
-	}
+        }
+        v[0].cnt=v[1].cnt=0;
+    }
 };
