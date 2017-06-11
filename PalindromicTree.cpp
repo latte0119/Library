@@ -11,7 +11,7 @@ struct PalindromicTree{
     vector<int>ord;
     int n,suf;
 
-    bool add(int pos){
+    bool process(int pos){
         char ch=s[pos];
         int cur=suf;
         while(true){
