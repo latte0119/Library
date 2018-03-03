@@ -96,9 +96,6 @@ int mods[3]={167772161,469762049,1224736769};
         vector<int>c2=ntt2.multiply(a,b);
         vector<int>c3=ntt3.multiply(a,b);
 
-        vint x(a.size()+b.size()-1);
-        rep(i,a.size())rep(j,b.size())x[i+j]=(x[i+j]+a[i]*b[j])%mod;
-
         vector<int>ret(a.size()+b.size()-1);
         for(int i=0;i<ret.size();i++){
             vector<pair<int,int>>mr(3);
