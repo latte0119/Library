@@ -1,6 +1,9 @@
+
 struct NumberTheoreticTransformWithArbitraryMod{
-int mods[3]={167772161,469762049,1224736769};
-    int roots[3]={3,3,3};
+    static constexpr int mod=1000000007;
+    static constexpr int mod0=167772161;
+    static constexpr int mod1=469762049;
+    static constexpr int mod2=1224736769;
     struct NumberTheoreticTransform{
         int mod;
         int root;
@@ -66,46 +69,105 @@ int mods[3]={167772161,469762049,1224736769};
             return A;
         }
     };
-    struct garner{
-        inline int extgcd(int a,int b,int& x,int& y){x=1,y=0;int g=a;if(b!=0) g=extgcd(b,a%b,y,x),y-=a/b*x;return g;}
-        inline int mod_inv(int a,int mod){int x,y;extgcd(a,mod,x,y);return (x%mod+mod)%mod;}
+    inline int mod_inv0(int a){
+        int m=mod0-2;
+        int ret=1;
+        while(m){
+            if(m&1)ret=ret*a%mod0;
+            a=a*a%mod0;
+            m>>=1;
+        }
+        return ret;
+    }
+    inline int mod_inv1(int a){
+        int m=mod1-2;
+        int ret=1;
+        while(m){
+            if(m&1)ret=ret*a%mod1;
+            a=a*a%mod1;
+            m>>=1;
+        }
+        return ret;
+    }
+    inline int mod_inv2(int a){
+        int m=mod2-2;
+        int ret=1;
+        while(m){
+            if(m&1)ret=ret*a%mod2;
+            a=a*a%mod2;
+            m>>=1;
+        }
+        return ret;
+    }
+    inline int mod_inv(int a){
+        int m=mod-2;
+        int ret=1;
+        while(m){
+            if(m&1)ret=ret*a%mod;
+            a=a*a%mod;
+            m>>=1;
+        }
+        return ret;
+    }
+    inline int garner(vector<int>mr){
+        mr.pb(0);
+        vector<int>coffs(mr.size(),1);
+        vector<int>constants(mr.size(),0);
 
-        int solve(vector<pair<int,int>>mr,int mod){
-            mr.push_back({mod,0});
-            vector<int>coffs(mr.size(),1);
-            vector<int>constants(mr.size(),0);
+        int v;
 
-            for(int i=0;i<mr.size()-1;i++){
-                int v=(mr[i].second-constants[i]+mr[i].first)*mod_inv(coffs[i],mr[i].first)%mr[i].first;
-                if(v<0)v+=mr[i].first;
-                for(int j=i+1;j<mr.size();j++){
-                    (constants[j]+=coffs[j]*v)%=mr[j].first;
-                    (coffs[j]*=mr[i].first)%=mr[j].first;
-                }
-            }
+        v=(mr[0]-constants[0]+mod0)*mod_inv0(coffs[0])%mod0;
+        if(v<0)v+=mod0;
+        (constants[1]+=coffs[1]*v)%=mod1;
+        (coffs[1]*=mod0)%=mod1;
+
+        (constants[2]+=coffs[2]*v)%=mod2;
+        (coffs[2]*=mod0)%=mod2;
+
+        (constants[3]+=coffs[3]*v)%=mod;
+        (coffs[3]*=mod0)%=mod;
+
+
+
+
+        v=(mr[1]-constants[1]+mod1)*mod_inv1(coffs[1])%mod1;
+        if(v<0)v+=mod1;
+
+        (constants[2]+=coffs[2]*v)%=mod2;
+        (coffs[2]*=mod1)%=mod2;
+
+        (constants[3]+=coffs[3]*v)%=mod;
+        (coffs[3]*=mod1)%=mod;
+
+
+        v=(mr[2]-constants[2]+mod2)*mod_inv2(coffs[2])%mod2;
+        if(v<0)v+=mod2;
+
+        (constants[3]+=coffs[3]*v)%=mod;
+        (coffs[3]*=mod2)%=mod;
 
         return constants[mr.size()-1];
-        }
-    };
+    }
+
     vector<int>convolute(vector<int>a,vector<int>b){
-        NumberTheoreticTransform ntt1(mods[0],roots[0]);
-        NumberTheoreticTransform ntt2(mods[1],roots[1]);
-        NumberTheoreticTransform ntt3(mods[2],roots[2]);
+        NumberTheoreticTransform ntt1(167772161,3);
+        NumberTheoreticTransform ntt2(469762049,3);
+        NumberTheoreticTransform ntt3(1224736769,3);
 
         vector<int>c1=ntt1.multiply(a,b);
         vector<int>c2=ntt2.multiply(a,b);
         vector<int>c3=ntt3.multiply(a,b);
 
-        vector<int>ret(a.size()+b.size()-1);
-        for(int i=0;i<ret.size();i++){
-            vector<pair<int,int>>mr(3);
-            mr[0]={mods[0],c1[i]};
-            mr[1]={mods[1],c2[i]};
-            mr[2]={mods[2],c3[i]};
 
-            ret[i]=garner().solve(mr,mod);
+        vector<int>mr(3);
+        for(int i=0;i<c1.size();i++){
+            mr[0]=c1[i];
+            mr[1]=c2[i];
+            mr[2]=c3[i];
+
+            c1[i]=garner(mr);
 
         }
-        return ret;
+        return c1;
     }
-}
+};
