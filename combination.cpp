@@ -15,11 +15,11 @@ int mpow(int a,int b){
 const int FACTSIZE=1111111;
 int fact[FACTSIZE];
 int factinv[FACTSIZE];
-class factInit{
-    factInit(){
+class FactInit{
+    FactInit(){
         fact[0]=1;
         for(int i=1;i<FACTSIZE;i++)fact[i]=fact[i-1]*i%mod;
         factinv[FACTSIZE-1]=mpow(fact[FACTSIZE-1],mod-2);
         for(int i=FACTSIZE-2;i>=0;i--)factinv[i]=factinv[i+1]*(i+1)%mod;
     }
-}
+}factInit;
