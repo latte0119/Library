@@ -16,6 +16,7 @@ const int FACTSIZE=1111111;
 int fact[FACTSIZE];
 int factinv[FACTSIZE];
 class FactInit{
+public:
     FactInit(){
         fact[0]=1;
         for(int i=1;i<FACTSIZE;i++)fact[i]=fact[i-1]*i%mod;
@@ -23,3 +24,12 @@ class FactInit{
         for(int i=FACTSIZE-2;i>=0;i--)factinv[i]=factinv[i+1]*(i+1)%mod;
     }
 }factInit;
+
+
+int binom(int n,int k){
+    return fact[n]*factinv[n-k]%mod*factinv[k]%mod;
+}
+
+int perm(int n,int k){
+    return fact[n]*factinv[n-k]%mod;
+}
