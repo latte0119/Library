@@ -10,8 +10,8 @@ struct fraction{
         a/=g;
         b/=g;
     }
-	bool operator==(const fraction& f){return a==f.a&&b==f.b;}
-	bool operator!=(const fraction& f){return a!=f.a||b!=f.b;}
+	bool operator==(const fraction& f)const{return a==f.a&&b==f.b;}
+	bool operator!=(const fraction& f)const{return a!=f.a||b!=f.b;}
 	fraction& operator+=(const fraction& f){
 		int64_t c=a*f.b+b*f.a;
 		int64_t d=b*f.b;
