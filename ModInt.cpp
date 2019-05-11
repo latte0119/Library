@@ -1,7 +1,7 @@
-template<int64_t mod>
+template<int32_t mod>
 struct ModInt{
-	int64_t a;
-	inline int64_t normalize(int64_t x){
+	int32_t a;
+	inline int32_t normalize(int64_t x){
 		x%=mod;
 		if(x<0)x+=mod;
 		return x;
@@ -19,7 +19,7 @@ struct ModInt{
 		return *this;
 	}
 	ModInt& operator*=(const ModInt &x){
-		a=a*x.a%mod;
+		a=(int64_t)a*x.a%mod;
 		return *this;
 	}
 	ModInt& operator/=(const ModInt &x){
@@ -48,11 +48,11 @@ struct ModInt{
 	ModInt inv()const{return pow(mod-2);}
 };
 
-template<int64_t mod>
+template<int32_t mod>
 istream& operator>>(istream& in,ModInt<mod>& a){
 	return (in>>a.a);
 }
-template<int64_t mod>
+template<int32_t mod>
 ostream& operator<<(ostream& out,const ModInt<mod>& a){
 	return (out<<a.a);
 }
