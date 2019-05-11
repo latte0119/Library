@@ -1,0 +1,92 @@
+template<class T>
+struct Polynomial:vector<T>{
+	using vector<T>::vector;
+	Polynomial& operator+=(const Polynomial &x){
+		if(vector<T>::size()<x.size())vector<T>::resize(x.size());
+		for(int i=0;i<x.size();i++)vector<T>::operator[](i)+=x[i];
+		return *this;
+	}
+	Polynomial& operator-=(const Polynomial &x){
+		if(vector<T>::size()<x.size())vector<T>::resize(x.size());
+		for(int i=0;i<x.size();i++)vector<T>::operator[](i)-=x[i];
+		return *this;
+	}
+	Polynomial& operator*=(const Polynomial &x){
+		if(vector<T>::size()==0||x.size()==0){
+			vector<T>::clear();
+			return *this;
+		}
+		Polynomial z(vector<T>::size()+x.size()-1);
+		for(int i=0;i<vector<T>::size();i++){
+			for(int j=0;j<x.size();j++){
+				z[i+j]+=vector<T>::operator[](i)*x[j];
+			}
+		}
+		return *this=z;
+	}
+	Polynomial& operator+=(const T &x){
+		if(vector<T>::size()==0)vector<T>::resize(1);
+		vector<T>::operator[](0)+=x;
+		return *this;
+	}
+	Polynomial& operator-=(const T &x){
+		if(vector<T>::size()==0)vector<T>::resize(1);
+		vector<T>::operator[](0)-=x;
+		return *this;
+	}
+	Polynomial& operator*=(const T &x){
+		for(int i=0;i<vector<T>::size();i++)vector<T>::operator[](i)*=x;
+		return *this;
+	}
+	Polynomial& operator/=(const T &x){
+		for(int i=0;i<vector<T>::size();i++)vector<T>::operator[](i)/=x;
+		return *this;
+	}
+	
+	Polynomial operator+(const Polynomial &x)const{
+		return Polynomial(*this)+=x;
+	}
+	Polynomial operator-(const Polynomial &x)const{
+		return Polynomial(*this)-=x;
+	}
+	Polynomial operator*(const Polynomial &x)const{
+		return Polynomial(*this)*=x;
+	}
+	Polynomial operator+(const T &x)const{
+		return Polynomial(*this)+=x;
+	}
+	Polynomial operator-(const T &x)const{
+		return Polynomial(*this)-=x;
+	}
+	Polynomial operator*(const T &x)const{
+		return Polynomial(*this)*=x;
+	}
+	Polynomial operator/(const T &x)const{
+		return Polynomial(*this)/=x;
+	}
+	
+	T eval(T x){
+		T ret=0;
+		T powX=1;
+		for(int i=0;i<vector<T>::size();i++){
+			ret+=vector<T>::operator[](i)*powX;
+			powX*=x;
+		}
+		return ret;
+	}
+};
+template<class T>
+Polynomial<T>simpleInterpolate(vector<T>x,vector<T>y){
+	Polynomial<T>ret;
+	for(int i=0;i<x.size();i++){
+		Polynomial<T>prod={1};
+		T div=1;
+		for(int j=0;j<x.size();j++)if(i!=j){
+			div*=x[i]-x[j];
+			Polynomial<T>tmp={-x[j],1};
+			prod*=tmp;
+		}
+		ret+=prod*y[i]/div;
+	}
+	return ret;
+}
