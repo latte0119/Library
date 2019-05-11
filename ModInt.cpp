@@ -1,4 +1,5 @@
-template<int64_t mod>struct ModInt{
+template<int64_t mod>
+struct ModInt{
 	int64_t a;
 	inline int64_t normalize(int64_t x){
 		x%=mod;
@@ -46,3 +47,12 @@ template<int64_t mod>struct ModInt{
 	}
 	ModInt inv()const{return pow(mod-2);}
 };
+
+template<int64_t mod>
+istream& operator>>(istream& in,ModInt<mod>& a){
+	return (in>>a.a);
+}
+template<int64_t mod>
+ostream& operator<<(ostream& out,const ModInt<mod>& a){
+	return (out<<a.a);
+}
