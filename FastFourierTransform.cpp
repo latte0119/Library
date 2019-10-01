@@ -57,7 +57,7 @@ struct FFT{
 		for(int i=0;i<f.size();i++)f[i]*=in;
 	}
 
-    vector<long long>multiply(vector<long long>A,vector<long long>B){
+    vector<long long>convolute(vector<long long>A,vector<long long>B){
         int n=1<<__lg(A.size()+B.size()-2)+1;
         vector<C>g(n),h(n);
         for(int i=0;i<A.size();i++)g[i]=A[i];
@@ -73,7 +73,7 @@ struct FFT{
         return AB;
     }
 
-	vector<long long>multiply2(vector<long long>A,vector<long long>B,long long mod){
+	vector<long long>arbitraryModConvolute(vector<long long>A,vector<long long>B,long long mod){
 		int n=1<<__lg(A.size()+B.size()-2)+1;
         vector<C>g(n),h(n);
 		for(int i=0;i<A.size();i++)g[i]=C(A[i]&~(~0<<15),A[i]>>15);
