@@ -1,3 +1,8 @@
+/*
+max{min(H[l,r))*(r-l) | 0<=l<r<=N}
+
+time,space:O(N)
+*/
 int64_t largestRectangleInHistogram(vector<int64_t>H){
     int32_t N=H.size(); 
     vector<int32_t>L(N),R(N);

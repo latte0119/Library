@@ -1,3 +1,9 @@
+/*
+a[i]=lcp(s[0,N),s[i,N))
+
+time,space:O(N)
+*/
+
 vector<int>zalgorithm(string s){
     vector<int>a(s.size());
     a[0]=s.size();

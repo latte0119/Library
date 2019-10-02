@@ -1,5 +1,5 @@
 /*
-C[g]=sum{A[i]*B[j] | gcd(i,j)=g}
+C[g]=sum{A[i]*B[j] | 1<=i,j && gcd(i,j)=g}
 time:O(NloglogN)
 space:O(N)
 */
