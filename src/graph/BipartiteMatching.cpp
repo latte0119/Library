@@ -2,11 +2,12 @@
 O(V(V+E))
 based on Ford-Fulkerson
 */
-struct bipartite_matching{
-    static const int MAX_V=2010;
-    vector<int>G[MAX_V];
-    int match[MAX_V];
-    bool used[MAX_V];
+struct BipartiteMatching{
+    int N;
+    BipartiteMatching(int n):N(n),G(n),match(n),used(n){}
+
+    vector<vector<int>>G;
+    vector<int>match,used;
 
     void add_edge(int u,int v){
         G[u].push_back(v);
@@ -15,8 +16,8 @@ struct bipartite_matching{
 
     bool dfs(int v){
         used[v]=true;
-        for(int i=0;i<G[v].size();i++){
-            int u=G[v][i],w=match[u];
+        for(auto u:G[v]){
+            int w=match[u];
             if(w<0||!used[w]&&dfs(w)){
                 match[v]=u;
                 match[u]=v;
@@ -28,10 +29,10 @@ struct bipartite_matching{
 
     int matching(){
         int res=0;
-        memset(match,-1,sizeof(match));
-        for(int v=0;v<MAX_V;v++){
+        fill(match.begin(),match.end(),-1);
+        for(int v=0;v<N;v++){
             if(match[v]<0){
-                memset(used,0,sizeof(used));
+                fill(used.begin(),used.end(),0);
                 if(dfs(v))res++;
             }
         }
