@@ -1,5 +1,5 @@
 /*
-based on Cooley-Cukey
+based on Cooley-Tukey
 O(nlogn)
 */
 
