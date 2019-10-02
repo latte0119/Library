@@ -18,14 +18,10 @@ vector<M>GCDConvolution(vector<M>A,vector<M>B){
 			B[k]+=B[k*i];
 		}
 	}
-	for(int i=1;i<m;i++){
-		A[i]+=A[0];
-		B[i]+=B[0];
-	}
 
-	for(int i=0;i<m;i++)A[i]*=B[i];
+	for(int i=1;i<m;i++)A[i]*=B[i];
 
-	isprime=vector<int>(m,1);
+	fill(isprime.begin(),isprime.end(),1);
 	for(int i=2;i<m;i++){
 		if(!isprime[i])continue;
 		for(int k=1;k*i<m;k++){
@@ -33,7 +29,13 @@ vector<M>GCDConvolution(vector<M>A,vector<M>B){
 			A[k]-=A[k*i];
 		}
 	}
-	for(int i=1;i<m;i++)A[i]-=A[0];
 	return A;
 }
 
+
+
+
+/*
+verification:
+https://atcoder.jp/contests/agc038/submissions/7820533
+*/
