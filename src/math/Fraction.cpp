@@ -10,7 +10,8 @@ struct Fraction{
 	Fraction():a(0),b(1){}
 	Fraction(int64_t a):a(a),b(1){}
 	Fraction(int64_t a,int64_t b):a(a),b(b){
-        int64_t g=gcd(a,b);
+		if(b<0)a*=-1,b*=-1;
+        int64_t g=gcd((a>0?a:-a),b);
         a/=g;
         b/=g;
     }
@@ -60,3 +61,10 @@ struct Fraction{
 	Fraction operator+()const{return Fraction(*this);}
 	Fraction operator-()const{return Fraction()-Fraction(*this);}
 };
+
+
+
+/*
+verification:
+https://atcoder.jp/contests/cpsco2019-s3/submissions/7820631
+*/
