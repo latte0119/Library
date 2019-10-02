@@ -36,6 +36,6 @@ vector<M>GCDConvolution(vector<M>A,vector<M>B){
 
 
 /*
-verification:
+verified:
 https://atcoder.jp/contests/agc038/submissions/7820533
 */

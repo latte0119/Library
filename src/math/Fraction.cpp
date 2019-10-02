@@ -65,6 +65,6 @@ struct Fraction{
 
 
 /*
-verification:
+verified:
 https://atcoder.jp/contests/cpsco2019-s3/submissions/7820631
 */
