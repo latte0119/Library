@@ -39,3 +39,9 @@ struct BipartiteMatching{
         return res;
     }
 };
+
+
+/*
+verified:
+http://judge.u-aizu.ac.jp/onlinejudge/review.jsp?rid=3904290#1
+*/
