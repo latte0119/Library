@@ -1,3 +1,7 @@
+/*
+O(V(V+E))
+based on Ford-Fulkerson
+*/
 struct bipartite_matching{
     static const int MAX_V=2010;
     vector<int>G[MAX_V];

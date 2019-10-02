@@ -1,3 +1,8 @@
+/*
+GF(p)
+inverse:O(log p) based on Fermat's little theorem (a^(p-1)=1 mod p)
+*/
+
 template<int32_t mod>
 struct ModInt{
 	int32_t a;

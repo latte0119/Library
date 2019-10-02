@@ -1,3 +1,17 @@
+/*
+sa:SuffixArray
+rank[sa[i]]=i
+
+get_lcp(l,r)=lcp(s[l,N),s[r,N))=min(lcp[l,r));
+
+RMQ:
+    sparse_table:<O(1) per query,O(NlogN)>
+    segtree:<O(logN) per query,O(N)>
+
+construction of sa: O(N) based on sa-is
+construction of lcp:O(N)
+*/
+
 class SuffixArray{
     void create_begin_bucket(vector<int>&v,vector<int>&bucket){
         fill(bucket.begin(),bucket.end(),0);

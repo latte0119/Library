@@ -1,3 +1,7 @@
+/*
+time: less than O(NlogN+Q) amortized
+based on weighted union heuristic
+*/
 struct UnionFindTree{
     vector<int>par,sz;
     UnionFindTree(int n){

@@ -1,3 +1,7 @@
+/*
+r in Q:
+r=a/b & (a,b)=(1) & b>=0
+*/
 struct Fraction{
     int64_t gcd(int64_t a,int64_t b){
         return b?gcd(b,a%b):a;

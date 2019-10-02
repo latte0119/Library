@@ -1,3 +1,12 @@
+/*
+0-indexed
+add(k,x): a[k]+=x
+sum(k): sum(a[0,k])
+
+
+space:O(N)
+time:O(logN) per query
+*/
 struct BinaryIndexedTree{
 	int n;
 	vector<int>dat;
