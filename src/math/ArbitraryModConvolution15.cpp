@@ -14,8 +14,6 @@ template<class Mint,class C>
 struct ArbitraryModConvolution15{
     static constexpr double PI=acos(-1);
 
-	ArbitraryModConvolution(){}
-
     static void dft(vector<C>&f){
         int n=f.size();
 		int s=__lg(n);
