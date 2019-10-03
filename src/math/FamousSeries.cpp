@@ -34,6 +34,50 @@ https://judge.yosupo.jp/submission/477
 /*
 https://ja.wikipedia.org/wiki/%E3%82%B9%E3%82%BF%E3%83%BC%E3%83%AA%E3%83%B3%E3%82%B0%E6%95%B0
 */
+
+/*
+calc [n,k] (0<=k<=n)
+O(nlogn)
+*/
+poly Stirling1th(int n){
+	if(n==0){
+		return {1};
+	}
+	int m=n/2;
+	poly A=Stirling1th(m);
+ 
+	poly B;
+	if(n%2==0){
+		B=A;
+	}
+	else{
+		B=poly(m+2);
+		B[m+1]=1;
+		for(int i=1;i<m+1;i++){
+			B[i]=A[i-1]+A[i]*m;
+		}
+	}
+ 
+	poly C(n-m+1);
+	mint f=1;
+	for(int i=0;i<=n-m;i++){
+		C[n-m-i]=mint(m).pow(i)/f;
+		B[i]*=f;
+		f*=(i+1);
+	}
+	C*=B;
+	f=1;
+	for(int i=0;i<=n-m;i++){
+		B[i]=C[n-m+i]/f;
+		f*=(i+1);
+	}
+	return A*B;
+}
+
+/*
+calc {n,k} (0<=k<=n)
+O(nlogn)
+*/
 poly Stirling2th(int n){
 	poly A(n+1),B(n+1);
 	mint f=1;
@@ -45,6 +89,3 @@ poly Stirling2th(int n){
 	}
 	return (A*B).pre(n+1);
 }
-/*
-
-*/
