@@ -15,7 +15,7 @@ https://www.codechef.com/viewsolution/26916572
 
 
 
-poly PartitionGF(int n){
+poly Partition(int n){
 	poly A(n);
 	A[0]=1;
 	for(int k=1;k<n;k++){
