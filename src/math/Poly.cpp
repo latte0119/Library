@@ -53,7 +53,6 @@ struct Poly{
     }
     Poly rev(){
         vector<Mint>res=v;
-        res.normalize();
         reverse(res.begin(),res.end());
         return res;
     }
