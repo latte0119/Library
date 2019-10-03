@@ -31,6 +31,7 @@ https://judge.yosupo.jp/submission/477
 */
 
 
+
 /*
 https://ja.wikipedia.org/wiki/%E3%82%B9%E3%82%BF%E3%83%BC%E3%83%AA%E3%83%B3%E3%82%B0%E6%95%B0
 */
@@ -89,3 +90,29 @@ poly Stirling2th(int n){
 	}
 	return (A*B).pre(n+1);
 }
+
+
+
+/*
+Eulerian Number <n,k> is the number of permutations with k "ascents"
+https://en.wikipedia.org/wiki/Eulerian_number
+*/
+poly EulerianNumber(int n){
+	vector<mint>fact(n+2);
+	fact[0]=1;
+	for(int i=1;i<=n+1;i++)fact[i]=fact[i-1]*i;
+
+	poly A(n+1),B(n+1);
+	for(int i=0;i<=n;i++){
+		A[i]=fact[n+1]/fact[i]/fact[n+1-i];
+		if(i&1)A[i]*=-1;
+
+		B[i]=mint(i+1).pow(n);
+	}
+
+	return (A*B).pre(n+1);
+}
+/*
+verified:
+https://atcoder.jp/contests/joisc2018/submissions/7837609
+*/
