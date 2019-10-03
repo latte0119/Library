@@ -29,3 +29,22 @@ poly PartitionGF(int n){
 verified:
 https://judge.yosupo.jp/submission/477
 */
+
+
+/*
+https://ja.wikipedia.org/wiki/%E3%82%B9%E3%82%BF%E3%83%BC%E3%83%AA%E3%83%B3%E3%82%B0%E6%95%B0
+*/
+poly Stirling2th(int n){
+	poly A(n+1),B(n+1);
+	mint f=1;
+	for(int i=0;i<=n;i++){
+		A[i]=mint(i).pow(n)/f;
+		B[i]=mint(1)/f;
+		if(i&1)B[i]*=-1;
+		f*=i+1;
+	}
+	return (A*B).pre(n+1);
+}
+/*
+
+*/
