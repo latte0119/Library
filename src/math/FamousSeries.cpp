@@ -15,6 +15,29 @@ https://www.codechef.com/viewsolution/26916572
 
 
 
+
+/*
+EGF of Bell Number
+B_{n+1}=\sum_{k=0}^{n} \binom{n}{k} B_k
+ 
+B'=exp(x)*B
+<=>exp(x)=B'/B
+<=>exp(x)-1=logB
+<=>B=exp(exp(x)-1)
+*/
+poly BellEGF(int n){
+	return (poly{0,1}.exp(n+1)-poly{1}).exp(n+1);
+}
+/*
+verified:
+https://codeforces.com/contest/908/submission/61839659
+*/
+
+
+
+
+
+
 poly Partition(int n){
 	poly A(n);
 	A[0]=1;
@@ -32,13 +55,15 @@ https://judge.yosupo.jp/submission/477
 
 
 
+
+
+
 /*
 https://ja.wikipedia.org/wiki/%E3%82%B9%E3%82%BF%E3%83%BC%E3%83%AA%E3%83%B3%E3%82%B0%E6%95%B0
 */
-
 /*
 calc [n,k] (0<=k<=n)
-O(nlogn)
+O(nlogn)  based on:f_{2n}(x)=f_n(x)*f_n(x+n)
 */
 poly Stirling1th(int n){
 	if(n==0){
