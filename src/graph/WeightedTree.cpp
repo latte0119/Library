@@ -1,3 +1,5 @@
+
+  
 template<class W,int lg=1>
 struct WeightedTree{
 	struct Edge{
@@ -7,13 +9,14 @@ struct WeightedTree{
 	};
 
 	int V;
+	int root;
 	vector<vector<Edge>>G;
 
 	vector<vector<int>>par;
 	vector<int>dep,sz,head;
 	vector<int>tin,tout;
 	vector<W>dist;
-	WeightedTree(int V=0):V(V),G(V),par(lg,vector<int>(V)),sz(V),dep(V),head(V),dist(V),tin(V),tout(V){}
+	WeightedTree(int V=0,int root=0):V(V),root(root),G(V),par(lg,vector<int>(V)),sz(V),dep(V),head(V),dist(V),tin(V),tout(V){}
 
 	void addEdge(int a,int b,W c=W(1)){
 		G[a].push_back(Edge(b,c));
@@ -44,9 +47,9 @@ struct WeightedTree{
 		tout[v]=tt;
 	}
 	void init(){
-		dfs(0,-1,0,W(0));
+		dfs(root,-1,0,W(0));
 		int tt=0;
-		dfs_hld(0,tt);
+		dfs_hld(root,tt);
 
 		for(int i=0;i+1<lg;i++){
 			for(int j=0;j<V;j++){
@@ -89,15 +92,3 @@ struct WeightedTree{
 		return tout[v];
 	}
 };
-
-
-/*
-verified:
-
-lca
-https://atcoder.jp/contests/abc014/submissions/7850071
-
-euler tour
-https://yukicoder.me/submissions/387017
-
-*/
