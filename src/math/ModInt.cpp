@@ -3,15 +3,10 @@ GF(p)
 inverse:O(log p) based on Fermat's little theorem (a^(p-1)=1 mod p)
 */
 
-template<int32_t mod>
+template<uint32_t mod>
 struct ModInt{
-	int32_t a;
-	inline int32_t normalize(int64_t x){
-		x%=mod;
-		if(x<0)x+=mod;
-		return x;
-	}
-	ModInt(const int64_t a=0):a(normalize(a)){}
+	uint32_t a;
+    ModInt(int64_t x=0):a((x%mod+mod)%mod){}
 
 	ModInt& operator+=(const ModInt &x){
 		a+=x.a;
@@ -19,12 +14,12 @@ struct ModInt{
 		return *this;
 	}
 	ModInt& operator-=(const ModInt &x){
-		a-=x.a;
-		if(a<0)a+=mod;
+		a+=mod-x.a;
+        if(a>=mod)a-=mod;
 		return *this;
 	}
 	ModInt& operator*=(const ModInt &x){
-		a=(int64_t)a*x.a%mod;
+		a=(uint64_t)a*x.a%mod;
 		return *this;
 	}
 	ModInt& operator/=(const ModInt &x){
@@ -40,9 +35,9 @@ struct ModInt{
 	bool operator!=(const ModInt x){return a!=x.a;}
 
 	ModInt operator-(){return ModInt(0)-ModInt(*this);}
-	ModInt pow(int64_t ex)const{
-		int64_t x=a;
-		int64_t res=1;
+	inline ModInt pow(uint64_t ex)const{
+		uint64_t x=a;
+		uint64_t res=1;
 		while(ex){
 			if(ex&1)res=res*x%mod;
 			x=x*x%mod;
@@ -50,14 +45,16 @@ struct ModInt{
 		}
 		return ModInt(res);
 	}
-	ModInt inv()const{return pow(mod-2);}
+
+    inline ModInt inv()const{return pow(mod-2);}
 };
 
-template<int32_t mod>
+template<uint32_t mod>
 istream& operator>>(istream& in,ModInt<mod>& a){
 	return (in>>a.a);
 }
-template<int32_t mod>
+template<uint32_t mod>
 ostream& operator<<(ostream& out,const ModInt<mod>& a){
 	return (out<<a.a);
 }
+//using mint=ModInt<998244353>;
