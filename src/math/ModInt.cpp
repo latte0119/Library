@@ -70,7 +70,7 @@ struct ModIntTable{
 		for(int i=2;i<N;i++)invs[i]=invs[mod%i]*(mod-mod/i);
 
 		facts[0]=1;
-		invs[0]=1;
+		finvs[0]=1;
 		for(int i=1;i<N;i++){
 			facts[i]=facts[i-1]*i;
 			finvs[i]=finvs[i-1]*invs[i];
