@@ -6,20 +6,17 @@ inverse:O(log p) based on Fermat's little theorem (a^(p-1)=1 mod p)
 template<uint32_t mod>
 struct ModInt{
 	uint32_t a;
-    ModInt(int64_t x=0):a((x%mod+mod)%mod){}
+	ModInt& s(uint32_t vv){
+		a=vv<mod?vv:vv-mod;
+		return *this;
+	}
 
-	ModInt& operator+=(const ModInt &x){
-		a+=x.a;
-		if(a>=mod)a-=mod;
-		return *this;
-	}
-	ModInt& operator-=(const ModInt &x){
-		a+=mod-x.a;
-        if(a>=mod)a-=mod;
-		return *this;
-	}
+    ModInt(int64_t x=0){s(x%mod+mod);}
+
+	ModInt& operator+=(const ModInt &x){return s(a+x.a);}
+	ModInt& operator-=(const ModInt &x){return s(a+mod-x.a);}
 	ModInt& operator*=(const ModInt &x){
-		a=(uint64_t)a*x.a%mod;
+		a=uint64_t(a)*x.a%mod;
 		return *this;
 	}
 	ModInt& operator/=(const ModInt &x){
@@ -34,19 +31,18 @@ struct ModInt{
 	bool operator==(const ModInt &x)const{return a==x.a;}
 	bool operator!=(const ModInt &x)const{return a!=x.a;}
 
-	ModInt operator-(){return ModInt()-*this;}
-	inline ModInt pow(uint64_t ex)const{
-		uint64_t x=a;
-		uint64_t res=1;
-		while(ex){
-			if(ex&1)res=res*x%mod;
-			x=x*x%mod;
-			ex>>=1;
+	ModInt operator-()const{return ModInt()-*this;}
+	ModInt pow(int64_t n)const{
+		ModInt res(1),x(*this);
+		while(n){
+			if(n&1)res*=x;
+			x*=x;
+			n>>=1;
 		}
-		return ModInt(res);
+		return res;
 	}
 
-    inline ModInt inv()const{return pow(mod-2);}
+    ModInt inv()const{return pow(mod-2);}
 };
 
 template<uint32_t mod>
@@ -61,10 +57,11 @@ using mint=ModInt<998244353>;
 
 
 
-template<class Mint,int32_t N>
+template<class Mint,int32_t lg>
 struct ModIntTable{
+	int N;
 	vector<Mint>facts,finvs,invs;
-	ModIntTable():facts(N),finvs(N),invs(N){
+	ModIntTable():N(1<<lg),facts(N),finvs(N),invs(N){
 		const uint32_t mod=Mint(-1).a+1;
 		invs[1]=1;
 		for(int i=2;i<N;i++)invs[i]=invs[mod%i]*(mod-mod/i);
@@ -81,4 +78,4 @@ struct ModIntTable{
 	inline Mint inv(int n)const{return invs[n];}
 	inline Mint binom(int n,int k)const{return facts[n]*finvs[k]*finvs[n-k];}
 };
-ModIntTable<mint,1<<19>mtable;
+ModIntTable<mint,19>mtable;
