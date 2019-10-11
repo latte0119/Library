@@ -58,3 +58,28 @@ ostream& operator<<(ostream& out,const ModInt<mod>& a){
 	return (out<<a.a);
 }
 using mint=ModInt<998244353>;
+
+
+
+
+template<class Mint,int32_t N>
+struct ModIntTable{
+	vector<Mint>facts,finvs,invs;
+	ModIntTable():facts(N),finvs(N),invs(N){
+		const uint32_t mod=Mint(-1).a+1;
+		invs[1]=1;
+		for(int i=2;i<N;i++)invs[i]=invs[mod%i]*(mod-mod/i);
+
+		facts[0]=1;
+		invs[0]=1;
+		for(int i=1;i<N;i++){
+			facts[i]=facts[i-1]*i;
+			finvs[i]=finvs[i-1]*invs[i];
+		}
+	}
+	inline Mint fact(int n){return facts[n];}
+	inline Mint finv(int n){return finvs[n];}
+	inline Mint inv(int n){return invs[n];}
+	inline Mint binom(int n,int k){return facts[n]*finvs[k]*finvs[n-k];}
+};
+ModIntTable<mint,1<<19>mtable;
