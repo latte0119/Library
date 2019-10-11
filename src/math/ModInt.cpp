@@ -14,8 +14,8 @@ struct ModInt{
 		return *this;
 	}
 	ModInt& operator-=(const ModInt &x){
-		a+=mod-x.a;
-        if(a>=mod)a-=mod;
+		if(a>=x.a)a-=x.a;
+		else a+=mod-x.a;
 		return *this;
 	}
 	ModInt& operator*=(const ModInt &x){
@@ -23,7 +23,7 @@ struct ModInt{
 		return *this;
 	}
 	ModInt& operator/=(const ModInt &x){
-		*this*=x.inv();
+		a=(uint64_t)a*x.inv().a%mod;
 		return *this;
 	}
 
@@ -31,8 +31,8 @@ struct ModInt{
 	ModInt operator-(const ModInt x){return ModInt(*this)-=x;}
 	ModInt operator*(const ModInt x){return ModInt(*this)*=x;}
 	ModInt operator/(const ModInt x){return ModInt(*this)/=x;}
-	bool operator==(const ModInt x){return a==x.a;}
-	bool operator!=(const ModInt x){return a!=x.a;}
+	bool operator==(const ModInt &x){return a==x.a;}
+	bool operator!=(const ModInt &x){return a!=x.a;}
 
 	ModInt operator-(){return ModInt(0)-ModInt(*this);}
 	inline ModInt pow(uint64_t ex)const{
@@ -57,4 +57,4 @@ template<uint32_t mod>
 ostream& operator<<(ostream& out,const ModInt<mod>& a){
 	return (out<<a.a);
 }
-//using mint=ModInt<998244353>;
+using mint=ModInt<998244353>;
