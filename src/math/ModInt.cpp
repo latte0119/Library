@@ -14,8 +14,8 @@ struct ModInt{
 		return *this;
 	}
 	ModInt& operator-=(const ModInt &x){
-		if(a>=x.a)a-=x.a;
-		else a+=mod-x.a;
+		a+=mod-x.a;
+        if(a>=mod)a-=mod;
 		return *this;
 	}
 	ModInt& operator*=(const ModInt &x){
@@ -23,18 +23,18 @@ struct ModInt{
 		return *this;
 	}
 	ModInt& operator/=(const ModInt &x){
-		a=(uint64_t)a*x.inv().a%mod;
+		*this*=x.inv();
 		return *this;
 	}
 
-	ModInt operator+(const ModInt x){return ModInt(*this)+=x;}
-	ModInt operator-(const ModInt x){return ModInt(*this)-=x;}
-	ModInt operator*(const ModInt x){return ModInt(*this)*=x;}
-	ModInt operator/(const ModInt x){return ModInt(*this)/=x;}
-	bool operator==(const ModInt &x){return a==x.a;}
-	bool operator!=(const ModInt &x){return a!=x.a;}
+	ModInt operator+(const ModInt &x)const{return ModInt(*this)+=x;}
+	ModInt operator-(const ModInt &x)const{return ModInt(*this)-=x;}
+	ModInt operator*(const ModInt &x)const{return ModInt(*this)*=x;}
+	ModInt operator/(const ModInt &x)const{return ModInt(*this)/=x;}
+	bool operator==(const ModInt &x)const{return a==x.a;}
+	bool operator!=(const ModInt &x)const{return a!=x.a;}
 
-	ModInt operator-(){return ModInt(0)-ModInt(*this);}
+	ModInt operator-(){return ModInt()-*this;}
 	inline ModInt pow(uint64_t ex)const{
 		uint64_t x=a;
 		uint64_t res=1;
@@ -50,7 +50,7 @@ struct ModInt{
 };
 
 template<uint32_t mod>
-istream& operator>>(istream& in,ModInt<mod>& a){
+istream& operator>>(istream& in,const ModInt<mod>& a){
 	return (in>>a.a);
 }
 template<uint32_t mod>
@@ -58,7 +58,6 @@ ostream& operator<<(ostream& out,const ModInt<mod>& a){
 	return (out<<a.a);
 }
 using mint=ModInt<998244353>;
-
 
 
 
@@ -77,9 +76,9 @@ struct ModIntTable{
 			finvs[i]=finvs[i-1]*invs[i];
 		}
 	}
-	inline Mint fact(int n){return facts[n];}
-	inline Mint finv(int n){return finvs[n];}
-	inline Mint inv(int n){return invs[n];}
-	inline Mint binom(int n,int k){return facts[n]*finvs[k]*finvs[n-k];}
+	inline Mint fact(int n)const{return facts[n];}
+	inline Mint finv(int n)const{return finvs[n];}
+	inline Mint inv(int n)const{return invs[n];}
+	inline Mint binom(int n,int k)const{return facts[n]*finvs[k]*finvs[n-k];}
 };
 ModIntTable<mint,1<<19>mtable;
