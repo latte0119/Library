@@ -30,6 +30,7 @@ struct ModInt{
 	ModInt operator/(const ModInt &x)const{return ModInt(*this)/=x;}
 	bool operator==(const ModInt &x)const{return a==x.a;}
 	bool operator!=(const ModInt &x)const{return a!=x.a;}
+	bool operator<(const ModInt &x)const{return a<x.a;}
 
 	ModInt operator-()const{return ModInt()-*this;}
 	ModInt pow(int64_t n)const{
