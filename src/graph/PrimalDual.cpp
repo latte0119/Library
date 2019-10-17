@@ -1,6 +1,6 @@
 struct PrimalDual{
     using F=long long;
-    const F INF=1ll<<50;
+    static const F INF;
     
     struct Edge{
         int to;
@@ -48,7 +48,7 @@ struct PrimalDual{
                     }
                 }
             }
-            if(dist[t]==INF)return -INF;
+            if(dist[t]==INF)return INF;
             for(int v=0;v<n;v++)h[v]+=dist[v];
             F nf=f;
             for(int v=t;v!=s;v=prevv[v]){
@@ -65,4 +65,4 @@ struct PrimalDual{
         return cur;
     }
 };
-
+const PrimalDual::F PrimalDual::INF=1ll<<50;
