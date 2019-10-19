@@ -27,7 +27,25 @@ struct PrimalDual{
         vector<int>prevv(n,-1),preve(n,-1);
         vector<F>dist(n);
         priority_queue<pair<F,int>,vector<pair<F,int>>,greater<pair<F,int>>>que;
-            
+        
+        /*
+        fill(h.begin(),h.end(),INF);
+        h[s]=0;
+        while(true){
+            bool update=false;
+            for(int v=0;v<n;v++){
+                for(auto &e:G[v]){
+                    if(e.cap&&h[e.to]>h[v]+e.cost){
+                        update=true;
+                        h[e.to]=h[v]+e.cost;
+                    }
+                }
+            }
+            if(!update)break;
+        }
+        */
+
+
         while(f>0){
             fill(dist.begin(),dist.end(),INF);
             dist[s]=0;
