@@ -1,3 +1,8 @@
+/*
+idom[w]: immediate dominator of w
+(nearest dominator)
+*/
+
 struct DominatorTree{
 	int n;
 	vector<vector<int>>G,rG;
@@ -65,3 +70,14 @@ struct DominatorTree{
 		return idom;
 	}
 };
+
+
+
+/*
+tutorial:
+http://sigma425.hatenablog.com/entry/2015/12/25/224053
+
+verified:
+http://judge.u-aizu.ac.jp/onlinejudge/review.jsp?rid=3940155#1
+https://judge.yosupo.jp/submission/970
+*/
