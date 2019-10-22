@@ -7,7 +7,7 @@ struct ConvexHullTrick{
 	deque<Line>lines;
  
 	//l.a>=m.a>=r.a
-	inline bool notNecessary(const Line &l,const Line &m,const Line &r){
+	inline bool needless(const Line &l,const Line &m,const Line &r){
 		return (m.a-l.a)*(r.b-m.b)>=(m.b-l.b)*(r.a-m.a);
 	}
 	void addLine(I a,I b){
@@ -19,7 +19,7 @@ struct ConvexHullTrick{
 				if(lines.front().b<=b)return;
 				lines.pop_front();
 			}
-			while(lines.size()>=2&&notNecessary(l,lines[0],lines[1]))lines.pop_front();
+			while(lines.size()>=2&&needless(l,lines[0],lines[1]))lines.pop_front();
 			lines.push_front(l);
 		}
 		else{
@@ -27,7 +27,7 @@ struct ConvexHullTrick{
 				if(lines.back().b<=b)return;
 				lines.pop_back();
 			}
-			while(lines.size()>=2&&notNecessary(lines[lines.size()-2],lines[lines.size()-1],l))lines.pop_back();
+			while(lines.size()>=2&&needless(lines[lines.size()-2],lines[lines.size()-1],l))lines.pop_back();
 			lines.push_back(l);
 		}
 	}
