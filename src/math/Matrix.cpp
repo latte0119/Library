@@ -27,7 +27,7 @@ struct Matrix{
 		}
 	}
 	Matrix& operator*=(const Matrix &A){
-		Matrix C(a.size(),vector<Mint>(a.size()));
+		Matrix C(a.size(),vector<Mint>(A.a[0].size()));
 		for(int i=0;i<a.size();i++){
 			for(int j=0;j<A[0].size();j++){
 				for(int k=0;k<a[0].size();k++)C[i][j]+=a[i][k]*A[k][j];
@@ -57,6 +57,14 @@ struct Matrix{
 			n>>=1;
 		}
 		return res;
+	}
+
+	Matrix transpose(){
+		Matrix T(a[0].size(),vector<Mint>(a.size()));
+		for(int i=0;i<a.size();i++){
+			for(int j=0;j<a[0].size();j++)T[j][i]=a[i][j];
+		}
+		return T;
 	}
 
 	bool operator==(const Matrix &A)const{
@@ -98,6 +106,7 @@ struct Matrix{
 		return ret;
 	}
 };
+using mat=Matrix<mint>;
 template<class Mint>
 ostream& operator<<(ostream& ost,const Matrix<Mint>&A){
 	for(int i=0;i<A.size();i++){
