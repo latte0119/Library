@@ -54,8 +54,8 @@ template<uint32_t mod>
 ostream& operator<<(ostream& out,const ModInt<mod>& a){
 	return (out<<a.a);
 }
-using mint=ModInt<998244353>;
-
+using mint=ModInt<1000000007>;
+//using mint=ModInt<998244353>;
 
 
 template<class Mint,int32_t lg>
