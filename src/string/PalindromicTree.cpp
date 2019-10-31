@@ -17,8 +17,8 @@ struct PalindromicTree{
 	int pos,suf;
 
 	PalindromicTree():pos(0),suf(1){
-		v.push_back(Node(-1,0,0));
-		v.push_back(Node(0,0,0));
+		v.emplace_back(-1,0,0);
+		v.emplace_back(0,0,0);
     }
 
 	void add(const string &t){
@@ -41,7 +41,7 @@ struct PalindromicTree{
         }
 
         suf=v.size();
-		v.push_back(Node(v[cur].len+2,-1,1));
+		v.emplace_back(v[cur].len+2,-1,1);
         v[cur].nex[ch]=suf;
 
         if(v[suf].len==1){
