@@ -1,4 +1,4 @@
-struct MminimumWeightArborescence{
+struct MinimumWeightArborescence{
 	using W=long long;
 	using E=pair<W,int>;
 
