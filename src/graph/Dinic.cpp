@@ -1,6 +1,6 @@
 struct Dinic{
     using F=long long;
-    static const F INF=1ll<<50;
+    static const F INF;
 
     struct Edge{
         int dst;
@@ -65,7 +65,7 @@ struct Dinic{
         }
     }
 };
-
+const Dinic::F Dinic::INF=1ll<<50;
 
 /*
 http://topcoder.g.hatena.ne.jp/Mi_Sawa/20140311

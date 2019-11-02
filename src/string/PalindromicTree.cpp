@@ -25,7 +25,7 @@ struct PalindromicTree{
 		s+=t;
 	}
 
-    void uku(){
+    void subroutine(){
 		assert(pos<s.size());
         char ch=s[pos];
         int cur=suf;
@@ -59,7 +59,7 @@ struct PalindromicTree{
     }
 
 	void process(){
-		uku();
+		subroutine();
 		pos++;
 		sufs.push_back(suf);
 	}
