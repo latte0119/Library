@@ -49,7 +49,6 @@ struct WeightedTree{
 		dfs_hld(root,tt);
 	}
 
-	// 1<<lg >=N-1!!!!!
 	int getLCA(int u,int v){
 		while(head[u]!=head[v]){
 			if(dep[head[u]]<dep[head[v]])swap(u,v);
