@@ -33,14 +33,14 @@ struct MergingSegmentTree{
         if(k>ls)ch[t2][1]=split(ch[t1][1],k-ls);
         else swap(ch[t1][1],ch[t2][1]);
         if(k<ls)ch[t2][0]=split(ch[t1][0],k);
-        s[t2]=s[t1]-k;s[t1]=k;
+        sz[t2]=sz[t1]-k;sz[t1]=k;
         return t2;
     }
     int merge(int t1,int t2){
         if(t1&&t2);else return t1^t2;
         ch[t1][0]=merge(ch[t1][0],ch[t2][0]);
         ch[t1][1]=merge(ch[t1][1],ch[t2][1]);
-        s[t1]+=s[t2];
+        sz[t1]+=sz[t2];
         return t1;
     }
 }
