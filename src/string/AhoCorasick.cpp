@@ -1,62 +1,48 @@
-/*
-symbol : !"#$%&'()*+,-./
-digit : 0~9
-symbol2 : :;<=>?@
-upper : A~Z
-symbol3 : [\]^_`
-lower : a~z	
-synbol4 : {|}~
-
-don't forget!!!!  :  build  
-*/
 struct AhoCorasick{
-	//  c \in [OFF,OFF+LEN)
-	static const int OFF=(int)('a');
-	static const int SUP=(int)('z');
-	static const int LEN=SUP-OFF+1;
-	
 	struct Node{
-		int nex[LEN];
+		map<char,int>nex;
 		int failink;
 		vector<int>suflist;
-		Node():failink(0){memset(nex,-1,sizeof(nex));}
+		bool match;
+		int len;
+		Node():failink(0),match(0),len(0){}
 	};
 	vector<Node>nds;
-
-	AhoCorasick():nds(1){}
+	AhoCorasick(){
+		nds.emplace_back();
+		nds[0].failink=-1;
+	}
 
 	int process(int k,int c){
-		c-=OFF;
-		while(nds[k].nex[c]==-1)k=nds[k].failink;
+		while(k!=-1&&nds[k].nex.find(c)==nds[k].nex.end())k=nds[k].failink;
+		if(k==-1)return 0;
 		return nds[k].nex[c];
 	}
 
 	void add(const string &s,int id){
 		int k=0;
 		for(auto c:s){
-			c-=OFF;
-			if(nds[k].nex[c]==-1){
+			if(nds[k].nex.find(c)==nds[k].nex.end()){
 				nds[k].nex[c]=nds.size();
 				nds.emplace_back();
+				nds.back().len=nds[k].len+1;
 			}
 			k=nds[k].nex[c];
 		}
 		nds[k].suflist.push_back(id);
+		nds[k].match=true;
 	}
 
 	void build(){
 		queue<int>que;
-		for(int i=0;i<LEN;i++){
-			if(nds[0].nex[i]==-1)nds[0].nex[i]=0;
-			else que.push(nds[0].nex[i]);
-		}
+		for(auto &p:nds[0].nex)que.push(p.second);
 		while(que.size()){
 			int k=que.front();
 			que.pop();
-			for(int i=0;i<LEN;i++){
-				if(nds[k].nex[i]==-1)continue;
-				int nx=nds[k].nex[i];
-				nds[nx].failink=process(nds[k].failink,i+OFF);
+			for(auto &p:nds[k].nex){
+				char c=p.first;
+				int nx=p.second;
+				nds[nx].failink=process(nds[k].failink,c);
 
 				vector<int>&curlist=nds[nds[nx].failink].suflist;
 				vector<int>&nexlist=nds[nx].suflist;

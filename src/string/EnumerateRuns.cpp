@@ -40,7 +40,7 @@ struct EnumerateRuns{
 			if(ll&&S[ll-1+p]==S[ll-1])continue;
 			if(rr<S.size()&&S[rr]==S[rr-p])continue;
 			if(f)tie(ll,rr)=pint(S.size()-rr,S.size()-ll);
-			pint I(ll,rr);
+			pair<int,int>I(ll,rr);
 			if(!mp.count(I)||mp[I]>p)mp[I]=p;
 		}
 	}
