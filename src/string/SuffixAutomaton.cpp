@@ -12,39 +12,59 @@ struct SuffixAutomaton{
 		st.emplace_back(0,-1);
 	}
 
-	void process(char c){
-		int cur=st.size();
-		st.emplace_back(st[last].len+1,0);
-		int p=last;
+	int process(char c,int cur=-1){
+		if(cur==-1){
+			cur=last;
+		}
+
+		if(st[cur].nex.count(c)){
+			int q=st[cur].nex[c];
+			if(st[q].len==st[cur].len+1){
+				return last=q;
+			}
+			int clone=st.size();
+			st.push_back(st[q]);
+			st[clone].len=st[q].len+1;
+			st[q].link=clone;
+			while(cur!=-1&&st[cur].nex[c]==q){
+				st[cur].nex[c]=clone;
+				cur=st[cur].link;
+			}
+			return last=clone;
+		}
+
+		int nex=st.size();
+		st.emplace_back(st[cur].len+1,0);
+		int p=cur;
 		while(p!=-1&&!st[p].nex.count(c)){
-			st[p].nex[c]=cur;
+			st[p].nex[c]=nex;
 			p=st[p].link;
 		}
-		if(p!=-1){
-			int q=st[p].nex[c];
-			if(st[p].len+1==st[q].len){
-				st[cur].link=q;
-			}
-			else{
-				int clone=st.size();
-				st.push_back(st[q]);
-				st[clone].len=st[p].len+1;
-				
-				st[q].link=st[cur].link=clone;
+		if(p==-1){
+			return last=nex;
+		}
 
-				while(p!=-1&&st[p].nex[c]==q){
-					st[p].nex[c]=clone;
-					p=st[p].link;
-				}
+		int q=st[p].nex[c];
+		if(st[p].len+1==st[q].len){
+			st[nex].link=q;	
+		}
+		else{
+			int clone=st.size();
+			st.push_back(st[q]);
+			st[clone].len=st[p].len+1;
+
+			st[q].link=st[nex].link=clone;
+			while(p!=-1&&st[p].nex[c]==q){
+				st[p].nex[c]=clone;
+				p=st[p].link;
 			}
 		}
-		last=cur;
+		return last=nex;
 	}
 
 	
-	vector<int>ord;
-	void calcTopologicalOrder(){
-		ord.clear();
+	vector<int>calcTopologicalOrder(){
+		vector<int>ord;
 		vector<int>deg(st.size());
 		for(int i=0;i<st.size();i++){
 			for(auto &p:st[i].nex)deg[p.second]++;
@@ -59,13 +79,32 @@ struct SuffixAutomaton{
 				if(--deg[p.second]==0)que.push(p.second);
 			}
 		}
+		return ord;
 	}
+
+	vector<int>calcTreeOrder(){
+		vector<int>ord;
+
+		vector<vector<int>>G(st.size());
+		for(int i=1;i<st.size();i++)G[st[i].link].push_back(i);
+		queue<int>que;
+		que.push(0);
+		while(que.size()){
+			int v=que.front();
+			que.pop();
+			ord.push_back(v);
+			for(auto u:G[v])que.push(u);
+		}
+		return ord;
+	}
+	/*
 	long long countDistinctSubstrings(){
-		calcTopologicalOrder();
+		auto ord=calcTopologicalOrder();
 		vector<int>dp(st.size());dp[0]=1;
 		for(auto id:ord){
 			for(auto &p:st[id].nex)dp[p.se]+=dp[id];
 		}
 		return accumulate(all(dp),0ll)-1;
 	}
+	*/
 };
