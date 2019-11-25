@@ -10,10 +10,10 @@ struct WeightedTree{
 	int root;
 	vector<vector<Edge>>G;
 
-	vector<int>par,dep,sz,head;
-	vector<int>tin,tout;
-	vector<W>dist;
-	WeightedTree(int V=0,int root=0):V(V),root(root),G(V),par(V),sz(V),dep(V),head(V),dist(V),tin(V),tout(V){}
+	vector<int>par_,dep_,sz_,head_;
+	vector<int>tin_,tout_,vs_;
+	vector<W>dist_;
+	WeightedTree(int V=0,int root=0):V(V),root(root),G(V),par_(V),sz_(V),dep_(V),head_(V),dist_(V),tin_(V),tout_(V),vs_(V){}
 
 	void addEdge(int a,int b,W c=W(1)){
 		G[a].push_back(Edge(b,c));
@@ -21,27 +21,28 @@ struct WeightedTree{
 	}
 
 	void dfs(int v,int p,int d,W c){
-		par[v]=p;
-		dep[v]=d;
-		sz[v]=1;
-		dist[v]=c;
+		par_[v]=p;
+		dep_[v]=d;
+		sz_[v]=1;
+		dist_[v]=c;
 
 		for(auto &e:G[v]){
 			if(e.to==p)continue;
 			dfs(e.to,v,d+1,c+e.cost);
-			sz[v]+=sz[e.to];
-			if(G[v][0].to==p||sz[e.to]>sz[G[v][0].to])swap(G[v][0],e);
+			sz_[v]+=sz_[e.to];
+			if(G[v][0].to==p||sz_[e.to]>sz_[G[v][0].to])swap(G[v][0],e);
 		}
 	}
 
 	void dfs_hld(int v,int &tt){
-		tin[v]=tt++;
+		vs_[tt]=v;
+		tin_[v]=tt++;
 		for(auto &e:G[v]){
-			if(e.to==par[v])continue;
-			head[e.to]=(e.to==G[v][0].to)?head[v]:e.to;
+			if(e.to==par_[v])continue;
+			head_[e.to]=(e.to==G[v][0].to)?head_[v]:e.to;
 			dfs_hld(e.to,tt);
 		}
-		tout[v]=tt;
+		tout_[v]=tt;
 	}
 	void init(){
 		dfs(root,-1,0,W(0));
@@ -49,29 +50,45 @@ struct WeightedTree{
 		dfs_hld(root,tt);
 	}
 
-	int getLCA(int u,int v){
-		while(head[u]!=head[v]){
-			if(dep[head[u]]<dep[head[v]])swap(u,v);
-			u=par[head[u]];
+	inline int lca(int u,int v)const{
+		while(head_[u]!=head_[v]){
+			if(dep_[head_[u]]<dep_[head_[v]])swap(u,v);
+			u=par_[head_[u]];
 		}
-		return dep[u]<dep[v]?u:v;
+		return dep_[u]<dep_[v]?u:v;
 	}
 
-	int getLength(int a,int b=0){
-		int l=getLCA(a,b);
-		return dep[a]+dep[b]-2*dep[l];
+    inline int size(int v)const{
+        return sz_[v];
+    }
+	inline int len(int a,int b=0)const{
+		int l=lca(a,b);
+		return dep_[a]+dep_[b]-2*dep_[l];
 	}
-	W getDistance(int a,int b=0){
-		int l=getLCA(a,b);
-		return dist[a]+dist[b]-2*dist[l];
+	inline W dist(int a,int b=0)const{
+		int l=lca(a,b);
+		return dist_[a]+dist_[b]-2*dist_[l];
 	}
-	int getDepth(int v){
-		return dep[v];
+	inline int dep(int v)const{
+		return dep_[v];
 	}
-	int getIn(int v){
-		return tin[v];
+	inline int tin(int v)const{
+		return tin_[v];
 	}
-	int getOut(int v){
-		return tout[v];
+	inline int tout(int v)const{
+		return tout_[v];
+	}
+
+	inline int vs(int k)const{
+		return vs_[k];
+	}
+	inline int heavy(int v)const{
+		if(G[v].size()==0||G[v][0].to==par_[v])return -1;
+		return G[v][0].to;
+	}
+
+	vector<Edge>& operator[](int i){
+		return G[i];
 	}
 };
+WeightedTree<int>wt;
