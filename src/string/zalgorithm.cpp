@@ -4,7 +4,8 @@ a[i]=lcp(s[0,N),s[i,N))
 time,space:O(N)
 */
 
-vector<int>zalgorithm(string s){
+template<class T>
+vector<int>zalgorithm(T s){
     vector<int>a(s.size());
     a[0]=s.size();
     int i=1,j=0;
@@ -18,4 +19,3 @@ vector<int>zalgorithm(string s){
     }
     return a;
 }
-
