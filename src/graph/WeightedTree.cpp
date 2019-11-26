@@ -1,4 +1,4 @@
-template<class W>
+template<class W,bool autoInit=true>
 struct WeightedTree{
 	struct Edge{
 		int to;
@@ -8,16 +8,26 @@ struct WeightedTree{
 
 	int V;
 	int root;
+	int E;
 	vector<vector<Edge>>G;
 
 	vector<int>par_,dep_,sz_,head_;
 	vector<int>tin_,tout_,vs_;
 	vector<W>dist_;
-	WeightedTree(int V=0,int root=0):V(V),root(root),G(V),par_(V),sz_(V),dep_(V),head_(V),dist_(V),tin_(V),tout_(V),vs_(V){}
+	WeightedTree(int V=0,int root=0):V(V),root(root),G(V),par_(V),sz_(V),dep_(V),head_(V),dist_(V),tin_(V),tout_(V),vs_(V),E(0){}
+	void set(int v){
+		*this=WeightedTree(v);
+	}
 
 	void addEdge(int a,int b,W c=W(1)){
+		assert(a<V&&b<V);
+		assert(E+1<V);
 		G[a].push_back(Edge(b,c));
 		G[b].push_back(Edge(a,c));
+		E++;
+		if(E==V-1&&autoInit){
+			init();
+		}
 	}
 
 	void dfs(int v,int p,int d,W c){
@@ -58,9 +68,27 @@ struct WeightedTree{
 		return dep_[u]<dep_[v]?u:v;
 	}
 
-    inline int size(int v)const{
-        return sz_[v];
-    }
+	
+	inline int ancestor(int v,int k){
+		while(v!=-1){
+			if(dep_[v]-dep_[head_[v]]<k){
+				k-=dep_[v]-dep_[head_[v]]+1;
+				v=par_[head_[v]];
+				continue;
+			}
+			return vs_[tin_[v]-k];
+		}
+		return -1;
+	}
+	
+
+	inline int par(int v)const{
+		return par_[v];
+	}
+
+	inline int size(int v)const{
+		return sz_[v];
+	}
 	inline int len(int a,int b=0)const{
 		int l=lca(a,b);
 		return dep_[a]+dep_[b]-2*dep_[l];
