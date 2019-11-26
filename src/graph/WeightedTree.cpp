@@ -90,10 +90,15 @@ struct WeightedTree{
 		int l=lca(a,b);
 		return dep_[a]+dep_[b]-2*dep_[l];
 	}
-	inline W dist(int a,int b=0)const{
+	inline W dist(int a,int b)const{
 		int l=lca(a,b);
 		return dist_[a]+dist_[b]-2*dist_[l];
 	}
+
+	inline W dist(int a)const{
+		return dist_[a];
+	}
+
 	inline int dep(int v)const{
 		return dep_[v];
 	}
@@ -116,4 +121,3 @@ struct WeightedTree{
 		return G[i];
 	}
 };
-WeightedTree<int>wt;
