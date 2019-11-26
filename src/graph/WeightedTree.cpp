@@ -1,4 +1,4 @@
-template<class W,bool autoInit=true>
+template<class W>
 struct WeightedTree{
 	struct Edge{
 		int to;
@@ -25,9 +25,6 @@ struct WeightedTree{
 		G[a].push_back(Edge(b,c));
 		G[b].push_back(Edge(a,c));
 		E++;
-		if(E==V-1&&autoInit){
-			init();
-		}
 	}
 
 	void dfs(int v,int p,int d,W c){
