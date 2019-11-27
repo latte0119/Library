@@ -9,3 +9,6 @@ Atcoder: [latte0119](https://atcoder.jp/user/latte0119)
 
 # 一生底辺赤コーダー 
 ![](/Images/Cmrrz7vUIAABFeL.jpg)
+
+# 私は負けてない
+![](/Images/f26a1f8190c5806b17422868639c68c0.jpg)
