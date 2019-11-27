@@ -9,9 +9,10 @@ using namespace std;
 #define all(v) (v).begin(),(v).end()
 #define fi first
 #define se second
-typedef vector<int>vint;
-typedef pair<int,int>pint;
-typedef vector<pint>vpint;
+
+using vint=vector<int>;
+using pint=pair<int,int>;
+using vpint=vector<pint>;
 
 template<typename A,typename B>inline void chmin(A &a,B b){if(a>b)a=b;}
 template<typename A,typename B>inline void chmax(A &a,B b){if(a<b)a=b;}
@@ -34,5 +35,5 @@ ostream& operator<<(ostream& ost,const vector<T>&v){
 }
 
 signed main(){
-	
+	return 0;
 }
