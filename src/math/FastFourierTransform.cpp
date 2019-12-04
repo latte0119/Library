@@ -1,8 +1,3 @@
-/*
-O(nlogn)  based on Cooley-Tukey
- 
-*/
- 
 using Cd = complex<double>;
 namespace std {
   template<>
@@ -15,20 +10,23 @@ namespace std {
   }
 }
  
-template<class C>
+template<int lg>
 struct FastFourierTransform{
-    static constexpr double PI=acos(-1);
+    using D=double;
+    using C=complex<D>;
+    using Array=array<C,1<<lg>;
+
+    static constexpr D PI=acos(-1);
  
-    static void dft(vector<C>&f){
-        int n=f.size();
+    static void dft(Array &f,int n){
 		int s=__lg(n);
 	
 		static vector<vector<C>>w(30);
-		w[0]=vector<C>(1,C(1.0,0.0));
+		w[0].assign(1,1.0);
 		for(int i=1;i<=s;i++){
 			if(w[i].size())continue;
-			w[i]=vector<C>(1<<i);
-			const double t=2*PI/(1<<i);
+			w[i].resize(1<<i);
+			const D t=2*PI/(1<<i);
 			for(int j=0;j<1<<i;j++)w[i][j]=(j&1)?polar(1.0,j*t):w[i-1][j>>1];
 		}
  
@@ -47,33 +45,28 @@ struct FastFourierTransform{
 			}
 		}
 	}
-	static void idft(vector<C>&f){
-		dft(f);
-		reverse(f.begin()+1,f.end());
-		double in=1.0/f.size();
-		for(int i=0;i<f.size();i++)f[i]*=in;
+	static void idft(Array &f,int n){
+		dft(f,n);
+		reverse(f.begin()+1,f.begin()+n);
+		D in=1.0/n;
+		for(int i=0;i<n;i++)f[i]*=in;
 	}
  
-    static vector<long long>convolute(vector<long long>A,vector<long long>B){
+    static vector<D>convolute(const vector<D>&A,const vector<D>&B){
         int n=1<<__lg(A.size()+B.size()-2)+1;
-        vector<C>g(n),h(n);
+        static Array g,h;
+        for(int i=0;i<n;i++)g[i]=h[i]=0;
         for(int i=0;i<A.size();i++)g[i]=A[i];
         for(int i=0;i<B.size();i++)h[i]=B[i];
  
-        dft(g);
-        dft(h);
+        dft(g,n);
+        dft(h,n);
         for(int i=0;i<n;i++)g[i]*=h[i];
-        idft(g);
+        idft(g,n);
  
-        vector<long long>AB(A.size()+B.size()-1);
-        for(int i=0;i<AB.size();i++)AB[i]=g[i].real()+0.5;
+        vector<D>AB(A.size()+B.size()-1);
+        for(int i=0;i<AB.size();i++)AB[i]=g[i].real();
         return AB;
     }
 };
-//using FFT=FastFourierTransform<complex<double>>;
- 
-
-/*
-verified:
-https://atc001.contest.atcoder.jp/submissions/7827416
-*/
+//using FFT=FastFourierTransform<18>;
