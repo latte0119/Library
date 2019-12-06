@@ -1,12 +1,7 @@
-/*
-based on Cooley-Tukey
-O(nlogn)
-*/
-
-template<class Mint,int32_t root>
+template<class Mint,int root,int lg>
 struct NumberTheoreticTransform{
-	static void ntt(vector<Mint>&f){
-		int n=f.size();
+    using Array=array<Mint,1<<lg>;
+	static void ntt(Array &f,int n){
         int s=__lg(n);
 
         for(int i=0,j=1;j<n-1;j++){
@@ -28,31 +23,26 @@ struct NumberTheoreticTransform{
         }
 	}
 
-    static void intt(vector<Mint>&f){
-        reverse(f.begin()+1,f.end());
-        ntt(f);
-        Mint in=Mint(f.size()).inv();
-        for(int i=0;i<f.size();i++)f[i]*=in;
+    static void intt(Array &f,int n){
+        reverse(f.begin()+1,f.begin()+n);
+        ntt(f,n);
+        Mint in=Mint(n).inv();
+        for(int i=0;i<n;i++)f[i]*=in;
     }
 
 	static vector<Mint>convolute(const vector<Mint>&A,const vector<Mint>&B){
         int n=1<<__lg(A.size()+B.size()-2)+1;
         
-        vector<Mint>a=A,b=B;
-        a.resize(n);b.resize(n);
-        ntt(a);
-        ntt(b);
-        for(int i=0;i<n;i++)a[i]*=b[i];
-        intt(a);
-        a.resize(A.size()+B.size()-1);
-        return a;
+        static Array g,h;
+        for(int i=0;i<n;i++)g[i]=h[i]=0;
+        ntt(g,n);
+        ntt(h,n);
+        for(int i=0;i<n;i++)g[i]*=h[i];
+        intt(g,n);
+        
+        vector<Mint>AB(A.size()+B.size()-1);
+        for(int i=0;i<AB.size();i++)AB[i]=g[i];
+        return AB;
     }
 };
-//using NTT=NumberTheoreticTransform<mint,3>;
-
-
-
-/*
-verified:
-https://atc001.contest.atcoder.jp/submissions/7826555
-*/
+using NTT=NumberTheoreticTransform<mint,3,18>;
