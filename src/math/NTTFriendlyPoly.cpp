@@ -5,15 +5,15 @@ namespace NTTFriendlyPoly{
  
 	using Mint=ModInt<mod>;
  
- 
-	const int LG=18;
+    
+	const int LG=20;
 	Mint invs[1<<LG];
 	Mint roots[1<<LG+1],iroots[1<<LG+1];
 	struct InitTable{
 		InitTable(){
 			invs[1]=1;
 			for(int i=2;i<1<<LG;i++)invs[i]=invs[mod%i]*(mod-mod/i);
- 
+            
 			rep(w,LG+1){
 				const int s=(1<<w)-1;
 				const Mint g=Mint(prim_root).pow((mod-1)>>w),ig=g.inv();
@@ -23,9 +23,11 @@ namespace NTTFriendlyPoly{
 					iroots[s+i]=ip;ip*=ig;
 				}
 			}
+            
 		}
 	}InitTableDummy;
- 
+    
+
 	void ntt(vector<Mint>&f){
 		const int n=f.size();
 		for(int b=n/2;b>=1;b/=2){
@@ -50,10 +52,9 @@ namespace NTTFriendlyPoly{
 					f[i+j+b]=tmp;
 				}
 			}
-		}
+        }
 		const Mint in=Mint(n).inv();
-		rep(i,n)
-			f[i]*=in;
+		rep(i,n)f[i]*=in;
 	}
  
 	vector<Mint> multiply(vector<Mint> x,vector<Mint> y){
@@ -67,8 +68,6 @@ namespace NTTFriendlyPoly{
 		intt(x);x.resize(n);
 		return x;
 	}
- 
- 
  
 	template<class Mint>
 	struct Poly{
@@ -103,6 +102,8 @@ namespace NTTFriendlyPoly{
 			for(int i=0;i<n;i++)res[i]=v[i]*x;
 			return res;
 		}
+
+        
 		Poly operator/(const Mint& x)const{
 			return (*this)*x.inv();
 		}
@@ -119,9 +120,13 @@ namespace NTTFriendlyPoly{
 			for(int i=0;i<n&&i<size();i++)res[i]=v[i];
 			return res;
 		}
+        Poly normalize()const{
+            vector<Mint>res=v;
+            while(res.size()&&res.back()==0)res.pop_back();
+            return res;
+        }
 		Poly rev()const{
-			vector<Mint>res=v;
-			while(res.size()&&res.back()==0)res.pop_back();
+            vector<Mint>res=v;
 			reverse(res.begin(),res.end());
 			return res;
 		}
@@ -137,8 +142,8 @@ namespace NTTFriendlyPoly{
 		}
  
 		Poly inv(int n)const{
-			vector<Mint>res{coef(0).inv()};
- 
+			vector<Mint>res{v[0].inv()};
+
 			for(int d=1;d<n;d<<=1){
 				vector<Mint>f(2*d),g(2*d);
 				for(int j=0;j<2*d;j++)f[j]=coef(j);
@@ -154,7 +159,7 @@ namespace NTTFriendlyPoly{
 				ntt(f);
 				for(int j=0;j<2*d;j++)f[j]*=g[j];
 				intt(f);
-				for(int j=0;j<d;j++)f[j]=res[j];
+                for(int j=0;j<d;j++)f[j]=res[j];
 				res=f;
 			}
 			return Poly(res).pre(n);
@@ -272,7 +277,26 @@ namespace NTTFriendlyPoly{
 			auto res=log(n);
 			res*=k;
 			return res.exp(n);
+        }
+
+        Poly operator/(const Poly &x){
+            auto a=normalize().rev();
+            auto b=x.normalize().rev();
+            if(a.size()<b.size())return {};
+            int m=a.size()-b.size();
+            return (a*b.inv(m+1)).pre(m+1).rev();
+        }
+		Poly operator%(const Poly &x){
+			return (*this-(*this/x)*x).normalize();
 		}
+
+		Poly& operator/=(const Poly &x){
+			return *this=*this/x;
+		}
+		Poly& operator%=(const Poly &x){
+			return *this=*this%x;
+		}
+
 		Mint& operator[](const int i){return v[i];}
 	};
 	
@@ -285,6 +309,57 @@ namespace NTTFriendlyPoly{
 		return ost;
 	}
 	using poly=Poly<Mint>;
+
+
+	map<pair<int,int>,poly>mem;
+
+	void preCalc(const vector<Mint>&c,int l,int r){
+		if(l+1==r){
+			mem[{l,r}]={-c[l],Mint(1)};
+			return;
+		}
+		int m=(l+r)>>1;
+		preCalc(c,l,m);
+		preCalc(c,m,r);
+		mem[{l,r}]=mem[{l,m}]*mem[{m,r}];
+	}
+	void preCalc(const vector<Mint>&c){
+		mem.clear();
+		preCalc(c,0,c.size());
+	}
+
+	void multiEval(poly P,const vector<Mint>&c,vector<Mint>&ans,int l,int r){
+		if(l+1==r){
+			P%=mem[{l,r}];
+			ans[l]=P[0];
+			return;
+		}
+		int m=(l+r)>>1;
+		multiEval(P%mem[{l,m}],c,ans,l,m);
+		multiEval(P%mem[{m,r}],c,ans,m,r);
+	}
+	vector<Mint>multiEval(const poly &P,const vector<Mint>&c){
+		preCalc(c);
+		vector<Mint>ans(c.size());
+		multiEval(P,c,ans,0,c.size());
+		return ans;
+	}
+
+	poly interpolate(const vector<Mint>&x,const vector<Mint>&w,int l,int r){
+		if(l+1==r){
+			return {w[l]};
+		}
+		int m=(l+r)>>1;
+		return interpolate(x,w,l,m)*mem[{m,r}]+interpolate(x,w,m,r)*mem[{l,m}];
+	}
+	poly interpolate(const vector<Mint>&x,const vector<Mint>&y){
+		preCalc(x);
+		auto L=mem[{0,x.size()}];
+		vector<Mint>w(x.size());
+		multiEval(L.diff(x.size()),x,w,0,x.size());
+		for(int i=0;i<x.size();i++)w[i]=y[i]/w[i];
+		return interpolate(x,w,0,x.size());
+	}
 };
  
 using NTTFriendlyPoly::poly;
