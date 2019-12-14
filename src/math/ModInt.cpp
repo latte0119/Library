@@ -42,7 +42,7 @@ struct ModInt{
 };
 
 template<uint32_t mod>
-istream& operator>>(istream& in,const ModInt<mod>& a){
+istream& operator>>(istream& in,ModInt<mod>& a){
 	return (in>>a.a);
 }
 template<uint32_t mod>
