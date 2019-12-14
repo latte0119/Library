@@ -3,9 +3,9 @@ struct Matrix{
 	vector<vector<Mint>>a;
 
 	template<class... Args>
-	Matrix(Args... args):a(args...){}
+	explicit Matrix(Args... args):a(args...){}
 
-	Matrix(const initializer_list<vector<Mint>>&in):a(in.begin(),in.end()){}
+	explicit Matrix(const initializer_list<vector<Mint>>&in):a(in.begin(),in.end()){}
 
 	const vector<Mint>& operator[](int i)const{return a[i];}
 	vector<Mint>& operator[](int i){return a[i];}
@@ -36,6 +36,15 @@ struct Matrix{
 		return *this=C;
 	}
 
+	Matrix& operator*=(const Mint &c){
+		for(int i=0;i<a.size();i++){
+			for(int j=0;j<a[0].size();j++){
+				a[i][j]*=c;
+			}
+		}
+		return *this;
+	}
+
 	static Matrix identity(int n){
 		Matrix I(n,vector<Mint>(n));
 		for(int i=0;i<n;i++)I[i][i]=1;
@@ -45,7 +54,7 @@ struct Matrix{
 	Matrix operator+(const Matrix &A)const{return Matrix(*this)+=A;}
 	Matrix operator-(const Matrix &A)const{return Matrix(*this)-=A;}
 	Matrix operator*(const Matrix &A)const{return Matrix(*this)*=A;}
-	
+	Matrix operator*(const Mint &c)const{return Matrix(*this)*=c;}
 
 	Matrix pow(int n){
 		Matrix res=identity(size());
@@ -88,7 +97,7 @@ struct Matrix{
 		for(int i=0;i<a.size();i++){
 			if(m[i][i]==0){
 				for(int j=i+1;j<a.size();j++)if(m[j][i]!=0){
-					swap(a[i],a[j]);
+					swap(m[i],m[j]);
 					ret=-ret;
 					break;
 				}
@@ -105,8 +114,39 @@ struct Matrix{
 		}
 		return ret;
 	}
+
+	//det(A-tI)
+	vector<Mint>eigenpoly(){
+		int n=a.size();
+		vector<Mint>eval(n+1);
+		for(int i=0;i<=n;i++){
+			auto A=*this;
+			for(int j=0;j<n;j++)A[j][j]-=i;
+			eval[i]=A.det();
+		}
+
+		vector<Mint>ret(n+1);
+		for(int i=0;i<=n;i++){
+			vector<Mint>p(n+1);
+			p[0]=eval[i];
+			Mint den=1;
+			for(int j=0;j<=n;j++){
+				if(j==i)continue;
+				den*=i-j;
+				for(int k=n-1;k>=0;k--){
+					p[k+1]+=p[k];
+					p[k]*=-j;
+				}
+			}
+			den=den.inv();
+			for(int j=0;j<=n;j++)p[j]*=den;
+			for(int j=0;j<=n;j++)ret[j]+=p[j];
+		}
+		return ret;
+	}
 };
 using mat=Matrix<mint>;
+using vec=vector<mint>;
 template<class Mint>
 ostream& operator<<(ostream& ost,const Matrix<Mint>&A){
 	for(int i=0;i<A.size();i++){
