@@ -99,6 +99,10 @@ struct WeightedTree{
 		return dist_[a];
 	}
 
+	inline int head(int v)const{
+		return head_[v];
+	}
+
 	inline int dep(int v)const{
 		return dep_[v];
 	}
