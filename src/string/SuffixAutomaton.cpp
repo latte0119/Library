@@ -1,7 +1,8 @@
+template<class C>
 struct SuffixAutomaton{
 	struct State{
 		int len,link;
-		map<char,int>nex;
+		map<C,int>nex;
 		State(int len,int link):len(len),link(link){}
 	};
 
@@ -12,7 +13,7 @@ struct SuffixAutomaton{
 		st.emplace_back(0,-1);
 	}
 
-	int process(char c,int cur=-1){
+	int process(C c,int cur=-1){
 		if(cur==-1){
 			cur=last;
 		}
@@ -97,14 +98,12 @@ struct SuffixAutomaton{
 		}
 		return ord;
 	}
-	/*
-	long long countDistinctSubstrings(){
+	int64_t countDistinctSubstrings(){
 		auto ord=calcTopologicalOrder();
-		vector<int>dp(st.size());dp[0]=1;
+		vector<int64_t>dp(st.size());dp[0]=1;
 		for(auto id:ord){
 			for(auto &p:st[id].nex)dp[p.se]+=dp[id];
 		}
 		return accumulate(all(dp),0ll)-1;
 	}
-	*/
 };
