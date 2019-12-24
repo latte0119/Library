@@ -19,11 +19,8 @@ struct WeightedTree{
 	}
 
 	void addEdge(int a,int b,W c=W(1)){
-		assert(a<V&&b<V);
-		assert(E+1<V);
 		G[a].push_back(Edge(b,c));
 		G[b].push_back(Edge(a,c));
-		E++;
 	}
 
 	void dfs(int v,int p,int d,W c){
@@ -50,7 +47,7 @@ struct WeightedTree{
 		}
 		tout_[v]=tt;
 	}
-	void init(int r){
+	void init(int r=0){
 		root=r;
 		dfs(root,-1,0,W(0));
 		int tt=0;
