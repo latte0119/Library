@@ -8,13 +8,12 @@ struct WeightedTree{
 
 	int V;
 	int root;
-	int E;
 	vector<vector<Edge>>G;
 
 	vector<int>par_,dep_,sz_,head_;
 	vector<int>tin_,tout_,vs_;
 	vector<W>dist_;
-	WeightedTree(int V=0,int root=0):V(V),root(root),G(V),par_(V),sz_(V),dep_(V),head_(V),dist_(V),tin_(V),tout_(V),vs_(V),E(0){}
+	WeightedTree(int V=0):V(V),G(V),par_(V),sz_(V),dep_(V),head_(V),dist_(V),tin_(V),tout_(V),vs_(V){}
 	void set(int v){
 		*this=WeightedTree(v);
 	}
@@ -41,20 +40,21 @@ struct WeightedTree{
 		}
 	}
 
-	void dfs_hld(int v,int &tt){
+	void dfs_hld(int v,int &tt,int h){
 		vs_[tt]=v;
 		tin_[v]=tt++;
+		head_[v]=h;
 		for(auto &e:G[v]){
 			if(e.to==par_[v])continue;
-			head_[e.to]=(e.to==G[v][0].to)?head_[v]:e.to;
-			dfs_hld(e.to,tt);
+			dfs_hld(e.to,tt,e.to==G[v][0].to?h:e.to);
 		}
 		tout_[v]=tt;
 	}
-	void init(){
+	void init(int r){
+		root=r;
 		dfs(root,-1,0,W(0));
 		int tt=0;
-		dfs_hld(root,tt);
+		dfs_hld(root,tt,root);
 	}
 
 	inline int lca(int u,int v)const{
