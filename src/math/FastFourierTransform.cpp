@@ -53,6 +53,7 @@ struct FastFourierTransform{
 	}
  
     static vector<D>convolute(const vector<D>&A,const vector<D>&B){
+        if(A.size()==0||B.size()==0)return {};
         int n=1<<__lg(A.size()+B.size()-2)+1;
         static Array g,h;
         for(int i=0;i<n;i++)g[i]=h[i]=0;

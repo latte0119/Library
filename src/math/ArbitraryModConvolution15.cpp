@@ -52,6 +52,7 @@ struct ArbitraryModConvolution15{
 	}
 
 	static vector<Mint>convolute(vector<Mint>A,vector<Mint>B){
+		if(A.size()==0||B.size()==0)return {};
 		int n=1<<__lg(A.size()+B.size()-2)+1;
         vector<C>g(n),h(n);
 		for(int i=0;i<A.size();i++)g[i]=C(A[i].a&~(~0<<15),A[i].a>>15);

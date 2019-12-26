@@ -58,6 +58,7 @@ namespace NTTFriendlyPoly{
 	}
  
 	vector<Mint> multiply(vector<Mint> x,vector<Mint> y){
+		if(x.size()==0||y.size()==0)return {};
 		int n=x.size()+y.size()-1;
 		int s=1<<__lg(n-1)+1;
 		x.resize(s);

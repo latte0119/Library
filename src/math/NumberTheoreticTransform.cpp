@@ -48,8 +48,8 @@ struct NumberTheoreticTransform{
     }
 
 	static vector<Mint>convolute(const vector<Mint>&A,const vector<Mint>&B){
+        if(A.size()==0||B.size()==0)return {};
         int n=1<<__lg(A.size()+B.size()-2)+1;
-        
         static Array g,h;
         for(int i=0;i<n;i++)g[i]=h[i]=0;
         for(int i=0;i<A.size();i++)g[i]=A[i];
