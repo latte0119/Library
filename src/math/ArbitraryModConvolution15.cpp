@@ -10,8 +10,9 @@ namespace std {
   }
 }
 
-template<class Mint,class C>
+template<class Mint>
 struct ArbitraryModConvolution15{
+	using C=complex<double>;
     static constexpr double PI=acos(-1);
 
     static void dft(vector<C>&f){
@@ -84,7 +85,7 @@ struct ArbitraryModConvolution15{
 		return AB;
 	}
 };
-//using FFT=ArbitraryModConvolution15<mint,complex<double>>;
+//using FFT=ArbitraryModConvolution15<mint>;
 
 /*
 verified:
@@ -190,7 +191,7 @@ struct ArbitraryModConvolution15{
 		return AB;
 	}
 };
-using FFT=ArbitraryModConvolution15<mint,complex<long double>>;
+using FFT=ArbitraryModConvolution15<mint>;
 
 /*
 verified:
