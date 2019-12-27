@@ -1,45 +1,53 @@
-namespace DCOpt{
+//Upper Triangular Matrix
+namespace DCOptUTM{
 using D=int;
 const D INF=numeric_limits<D>::max()/10;
 vector<D>dp,nex;
 
-int L,R;
-D val;
+
+int cur_l,cur_r;
+
+inline D f(int l,int r){
+}
+
 void ex_r(){
 	//add
 
-    R++;
+	cur_r++;
 }
 void ex_l(){
-    L--;
+    cur_l--;
 
 	//add
 }
 
 void sh_r(){
-    R--;
-
+    cur_r--;
 	//del
 }
 
 void sh_l(){
 	//del
 
-    L++;
+    cur_l++;
 }
 
+// nex : [l,r)    cand : [opt_l,opt_r]
 void solve(int l,int r,int opt_l,int opt_r){
 	if(l==r)return;
 	int m=(l+r)/2;
 
-	while(m>R)ex_r();
-	while(opt_l<L)ex_l();
-	while(m<R)sh_r();
-	while(opt_l>L)sh_l();
+	while(m>cur_r)ex_r();
+	while(opt_l<cur_l)ex_l();
+	while(m<cur_r)sh_r();
+	while(opt_l>cur_l)sh_l();
+
+	//cur_l==opt_l
+	//cur_r==m
 
 	pair<D,int>mi(INF,opt_l);
-	while(L<m&&L<=opt_r){
-		chmin(mi,pair<D,int>(dp[L]+val,L));
+	while(cur_l<m&&cur_l<=opt_r){
+		chmin(mi,pair<D,int>(dp[cur_l]+f(cur_l,cur_r),cur_l));
 		sh_l();
 	}
 	nex[m]=mi.fi;
@@ -48,19 +56,29 @@ void solve(int l,int r,int opt_l,int opt_r){
 	solve(m+1,r,mi.se,opt_r);
 }
 
-vector<D>calc(){
-	dp=vector<D>(N+1,INF);
-	dp[0]=0;
+vector<D>convolute(const vector<D>&ini){
+	dp=ini;
+	nex.resize(ini.size());
+	solve(0,dp.size(),0,dp.size());
+	return nex;
+}
 
-	for(int k=1;k<=K;k++){
-		nex=vector<D>(N+1,INF);
-		solve(1,N+1,0,N-1);
-		swap(dp,nex);
+vector<D>monotoneMinima(int N){
+	return convolute(vector<D>(N+1,0));
+}
+
+
+//dp[k][i]=min{dp[k-1][j]+f(j,i)  | j<i};
+vector<D>calcDP(int N,int K){
+	vector<D>cur(N+1,INF);
+	cur[0]=0;
+	for(int k=0;k<K;k++){
+		cur=convolute(cur);
 	}
-	return dp;
-}
+	return cur;
 }
 
+}
 /*
 https://paper.dropbox.com/doc/DivideAndConquerOptimization-aZu7wwzXNbLV32aG0EkHv
 
