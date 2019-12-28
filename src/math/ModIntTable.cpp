@@ -17,7 +17,16 @@ struct ModIntTable{
 	inline Mint fact(int n)const{return facts[n];}
 	inline Mint finv(int n)const{return finvs[n];}
 	inline Mint inv(int n)const{return invs[n];}
-	inline Mint binom(int n,int k)const{return facts[n]*finvs[k]*finvs[n-k];}
-    inline Mint perm(int n,int k)const{return facts[n]*finvs[n-k];} 
+	inline Mint binom(int n,int k)const{
+		if(n<0||k<0||k>n)return 0;
+		return facts[n]*finvs[k]*finvs[n-k];
+	}
+	inline Mint perm(int n,int k)const{
+		if(n<0||k<0||k>n)return 0;
+		return facts[n]*finvs[n-k];
+	}
+	inline Mint catalan(int n){
+		return facts[2*n]*finvs[n+1]*finvs[n];
+	}
 };
-ModIntTable<mint,19>mtable;
+ModIntTable<mint,19>mt;
