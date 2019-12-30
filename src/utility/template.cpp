@@ -4,7 +4,6 @@ using namespace std;
 #define int long long
 
 #define rep(i,n) for(int i=0;i<(n);i++)
-#define reps(i,a,b) for(int i=(a);i<(b);i++)
 #define pb push_back
 #define eb emplace_back
 #define all(v) (v).begin(),(v).end()
@@ -35,6 +34,19 @@ ostream& operator<<(ostream& ost,const vector<T>&v){
     return ost;
 }
 
+inline int topbit(unsigned long long x){
+    return x?63-__builtin_clzll(x):-1;
+}
+
+inline int popcount(unsigned long long x){
+    return __builtin_popcountll(x);
+}
+
+inline int parity(unsigned long long x){
+    return __builtin_parity(x);
+}
+
 signed main(){
+
     return 0;
 }
